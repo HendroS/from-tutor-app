@@ -2,16 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
-import LoginPage from './pages/login.jsx'
-import RegisterPage from './pages/register.jsx'
-import ErrorPage from './pages/404.jsx'
-import ProductPage from './pages/products.jsx'
-import ProfilePage from './pages/profile.jsx'
-import DetailProductPage from './pages/detailProduct.jsx'
+import LoginPage from './pages/login'
+import RegisterPage from './pages/register'
+import ErrorPage from './pages/404'
+import ProductPage from './pages/products'
+import ProfilePage from './pages/profile'
+import DetailProductPage from './pages/detailProduct'
 import { Provider } from 'react-redux'
 import store from './redux/store.js'
-import DarkModeContextProvider from './components/context/DarkMode.jsx'
-import { TotalPriceContexProvider } from './components/context/TotalPriceContex.jsx'
+import DarkModeContextProvider from './context/DarkMode'
+import { TotalPriceContexProvider } from './context/TotalPriceContex'
+import Player from './pages/player'
 
 
 const router = createBrowserRouter([
@@ -38,10 +39,13 @@ const router = createBrowserRouter([
   {
     path: "/products/:id",
     element:<DetailProductPage/>
+  }, {
+    path: "/player",
+    element: <Player/>
   }
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/* <App /> */}
     <Provider store={store}>

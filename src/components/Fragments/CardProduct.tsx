@@ -6,7 +6,9 @@ import Button from "../Elements/Button"
 import { useDispatch } from "react-redux"
 import { addToCart } from "../../redux/slices/cartSlice"
 
-const CardProduct = ({ children }) => {
+
+
+const CardProduct = ({ children }:TypeChildren) => {
   return (
           <div className="w-full max-w-xs bg-slate-800 rounded-lg border border-slate-400 shadow overflow-hidden flex flex-col justify-between">
               {children}
@@ -14,13 +16,13 @@ const CardProduct = ({ children }) => {
   )
 }
 
-const Header = ({image,id}) => {
+const Header = ({image,id}:{image:string,id:number}) => {
   return (
               <Link to={"/products/"+id}>
                 <img src={image} alt="shoes" className="p-8 rounded-t-lg h-60 w-full object-cover" />
             </Link>)
 }
-const Body = ({children,title,id}) => {
+const Body = ({children,title,id}:TypeChildren&{title:string,id:number}) => {
     return <div className="px-5 pb-5 h-full">
               <Link to={"/products/"+id}>
                 <h5 className="text-xl font-semibold text-white tracking-tight">{ title }</h5>
@@ -28,10 +30,10 @@ const Body = ({children,title,id}) => {
               </Link>
             </div>
  }
-const Footer = ({ price, id }) => {
+const Footer = ({ price, id }:{ price:number, id:number }) => {
   const dispatch = useDispatch()  
   return (<div className="flex justify-between items-center px-5 pb-5">
-    <span className="text-xl font-bold items-center text-white">{Number(price).toLocaleString('en-US', { maximumFractionDigits: 0, style: 'currency', currency: "USD" })}</span>
+    <span className="text-xl font-bold items-center text-white">{price!.toLocaleString('en-US', { maximumFractionDigits: 0, style: 'currency', currency: "USD" })}</span>
     <Button classname="bg-blue-700 text-sm text-nowrap px-5" onClick={() => dispatch(addToCart({id:id,qty:1}))}>Add to chart</Button>
   </div>);
 }
@@ -39,7 +41,6 @@ const Footer = ({ price, id }) => {
 CardProduct.Header = Header;
 CardProduct.Body = Body;
 CardProduct.Footer = Footer;
-
 
 
 export default CardProduct

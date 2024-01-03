@@ -4,14 +4,30 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getProduct } from "../services/product.services";
 
+interface product{
+    id:1,
+    title:string,
+    price:number,
+    category:string,
+    description:string,
+    image: string,
+    rating: {
+            rate: number,
+            count: number
+            }
+}
 const DetailProductPage = () => {
-    const { id } = useParams('id')
-    const [product, setProduct] = useState({});
+    const { id } = useParams()
+    const [product, setProduct] = useState<product|null>(null);
     const [isFetching, setIsFetching] = useState(false);
     useEffect(() => {
         setIsFetching(true)
-        getProduct(id, (status,res) => {
-            setProduct(res)
+        getProduct(parseInt(id||''), (status,res) => {
+            if (status) {
+                setProduct(res)
+            } else {
+                console.log(res.message)
+            }
             setIsFetching(false)
         })
         

@@ -7,7 +7,8 @@ import CardProduct from "../components/Fragments/CardProduct"
 import { getProducts } from "../services/product.services"
 import TableCart from "../components/Fragments/TableCart"
 import Navbar from "../components/Layouts/Navbar"
-import { DarkMode } from "../components/context/DarkMode"
+import { DarkMode } from "../context/DarkMode"
+import { inherits } from "util"
 
 const LoadingSpinner = () => {
   return (
@@ -17,10 +18,10 @@ const LoadingSpinner = () => {
 
 const ProductPage = () => {
   // const [total, setTotal] = useState(0)
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<TypeProducts>([])
   const [isFetching, setIsFetching] = useState(false)
   const [error, setError] = useState(null)
-  const {isDarkMode} = useContext(DarkMode)
+  const {isDark} = useContext(DarkMode)
 
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const ProductPage = () => {
   }, [])
 
   return (
-    <div className={`w-full min-h-screen flex flex-col min-w-min max-w-7xl items-center ${isDarkMode&&'bg-slate-900'}`}>
+    <div className={`w-full min-h-screen flex flex-col min-w-min max-w-7xl items-center ${isDark?'bg-slate-900 text-white':'bg-slate-100 text-black'}`}>
       <Navbar/>
       {(error)
         ? <div className="h-full m-auto"><p>Opppsss... error fetching {error}</p></div>
@@ -56,7 +57,7 @@ const ProductPage = () => {
           </div>
           <div className="w-full md:w-3/4 min-h-52 py-4 gap-1 flex justify-center flex-wrap">
             {isFetching && <div className="min-h-12 w-full m-auto"><LoadingSpinner /></div>}
-              {products.map((p) => (
+              {products.map((p:TypeProduct) => (
                 // <div key={p.id} className="max-w-xs"> 
                 <CardProduct key={p.id}  >
                   <CardProduct.Header image={p.image} id={p.id} />

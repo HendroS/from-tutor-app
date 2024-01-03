@@ -1,24 +1,25 @@
 /* eslint-disable react/prop-types */
-import { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext } from "react";
 
-const TotalPriceContex = createContext(null);
+const TotalPriceContex = createContext<{ total: number }>({ total: 0});
 
-const TotalPriceDispatchContext = createContext(null)
+const TotalPriceDispatchContext = createContext<any>(null)
 
-const totalPriceReducer = (state, action) => {
+const totalPriceReducer = (state:{total:number}, action:{type:string,payload:{total:number}}) => {
     switch (action.type) {
         case "UPDATE":
+            state;
             return {
                 total: action.payload.total
             }
         default:
-            throw Error("Unknown action: "+action.type)
+            throw Error("Unknown action: " + action.type)
     }
     
 }
 
-export const TotalPriceContexProvider = ({children}) => {
-    const [totalPrice, dispatch] = useReducer(totalPriceReducer,{total:0});
+export const TotalPriceContexProvider = ({children}:{children:React.ReactNode}) => {
+    const [totalPrice, dispatch] = useReducer(totalPriceReducer, { total: 0 });
 
     return (
         <TotalPriceContex.Provider value={totalPrice}>
@@ -30,8 +31,7 @@ export const TotalPriceContexProvider = ({children}) => {
 }
 
 export function useTotalPrice(){
-    return useContext(TotalPriceContex)
-    
+    return useContext(TotalPriceContex) 
 }
 
 export function useTotalPriceDispatch() {

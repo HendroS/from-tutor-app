@@ -1,27 +1,28 @@
 /* eslint-disable react/prop-types */
 
+
 import { useEffect,useRef,useContext } from "react"
 import { useSelector } from "react-redux"
-import { DarkMode } from "../context/DarkMode"
-import { useTotalPrice, useTotalPriceDispatch } from "../context/TotalPriceContex";
+import { DarkMode } from "../../context/DarkMode"
+import { useTotalPrice, useTotalPriceDispatch } from "../../context/TotalPriceContex";
+import { RootState } from "../../redux/store";
+  
+// }
 
-const TableCart = ({ products }) => {
-  const cart = useSelector((state) => state.cart.data);
+const TableCart = ({ products }: { products:TypeProducts }) => {
+  const cart = useSelector((state:RootState) => state.cart.data);
   // const [total, setTotal] = useState(0);
-  const { isDarkMode } = useContext(DarkMode);
+  const { isDark } = useContext(DarkMode);
   const dispatch = useTotalPriceDispatch();
   const {total} = useTotalPrice()
   
-
-
-    
-    
   useEffect(() => {
     console.log('called', cart.length, products.length);
     if (cart.length > 0 && products.length > 0) {
       const sum = cart.reduce((acc, item) => {
         const product = products.find((product) => product.id === item.id);
-        return acc + product.price * item.qty
+        if (product) return acc + product.price * item.qty;
+        return acc;
       }, 0);
       // setTotal(sum);
       dispatch({
@@ -35,17 +36,19 @@ const TableCart = ({ products }) => {
     }
   }, [cart, products]);
 
-  const totalRef = useRef(null);
+  const totalRef = useRef<HTMLTableRowElement>(null);
   useEffect(() => {
-    if (cart.length > 0 && products.length > 0) {
-      totalRef.current.style.display = 'table-row'
-    } else {
-      totalRef.current.style.display = 'none'
+    if (totalRef.current) { 
+      if (cart.length > 0 && products.length > 0) {
+        totalRef.current.style.display = 'table-row'
+      } else {
+        totalRef.current.style.display = 'none'
+      }
     }
   }, [cart, products]);
 
   return (
-    <table className={`text-left table-auto border-separate border-spacing-x-3 ${isDarkMode && 'text-slate-300'}`}>
+    <table className={`text-left table-auto border-separate border-spacing-x-3 ${isDark && 'text-slate-300'}`}>
       <thead>
         <tr>
           <th>Product</th>
